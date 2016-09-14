@@ -3,7 +3,7 @@ Powershell Script to automate conversion of video files a specified size or larg
 
 # Pre Reqs
 1. Must have HandBreak(64-bit) installed.  You can get it here: <https://handbrake.fr/downloads.php>
-2. Must have powershell setup to allow this script.  See powershell setup
+2. Must have powershell setup to allow this script.  See [Powershell Setup](https://github.com/Rocketcandy/ConvertUsingHandBreakCLI#powershell-setup)
 3. Edit the script and change the first section of the script to match your needs
 
 # Running the script
