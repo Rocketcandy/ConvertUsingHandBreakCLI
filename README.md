@@ -13,6 +13,16 @@ A couple notes about editing the script
 2. Or a local path.  Example: "C:\Users\Public\Videos"
 3. Just make sure that whatever path you use it stays inside the quotes.
  
+# What does the script actually do?
+
+1. By default it will look for all movies files larger than 2GB and all Episode files larger than 1GB
+2. Once it has found them all it will start converting them from largest to smallest
+3. It will create a brand new file named: OriginalFileName-New
+4. Once the conversion is completed it will delete the OriginalFileName and rename the newly converted file to match the OriginalFileName
+5. When a conversion is completed it will add the file name and path to the csv spreadsheet and not try to convert it again.
+6. If a conversion fails it does not delete the original file
+7. If you do have a failed conversion you might have to delete the OriginalFileName-New file that was created before it failed.
+8. You should only have to delete the OriginalFileName-New file if you kill powershell to stop converting.
 
 # Running the script
 1. After you have modified the variables and changed the execution policy right click on the script
@@ -31,6 +41,11 @@ The easiest way to do this is to allow this script to run by using this command 
 Select Yes to all when prompted
 
 for more information on Execution Policy view this page: <https://technet.microsoft.com/library/hh847748.aspx>
+
+# Other Information
+
+1. This takes a LONG time to run it all depends on how fast your computer is and how the original file was encoded
+2. On average a 2GB file will take 2-3 hours to complete on an 8 core CPU clocked around 3.9GHz (Might be faster or slower depending on how new the CPU is)
 
 # License
 
