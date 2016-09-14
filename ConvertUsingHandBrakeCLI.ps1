@@ -1,25 +1,46 @@
 ﻿####  Change Values below to match what your enviroment and file size to look for #####
 
+### Change file size if desired below ###
+
 # Look for TV Shows larger than this value
 $TvShowSize = 1GB
+
 # Look for Movies larger than this value
 $MovieSize = 2GB
+
+
+### Specify Directories below ###
+
 # TV Shows directory
-$TvShowDir = "\\path\to\Seasons"
+$TvShowDir = "N:\Seasons\2 Broke Girls\Season 05"
+
 # Movies directory
-$MovieDir = "\\path\to\Videos"
-# Location of spreadsheet that contains previously converted files to skip on the next run do NOT create this file, just give it where you want it to go!
-$ConversionCompleted = "\\path\to\ConversionsCompleted.csv"
-# HandBreak Instillation directory (The directory that has HandBrakeCLI.exe in it) 
-$HandBreakDir = "C:\Program Files\Handbrake"
-# Directory you want log files to go to
-$LogFileDir = "\\path\to\Logs"
+$MovieDir = "N:\Videos\2000's"
+
+
+### Change file format to desired format, defaults to .mkv"
+
 #File format must be either mkv or mp4
 $FileFormat = "mkv"
 
 
+##### Can be changed but will default to the extracted folder and the 64bit install of handbreak
+
+# Spreadsheet containing completed conversions information. Do not change unless you want it to go to a differnt path
+$ConversionCompleted = ".\ConversionsCompleted.csv"
+$ConversionCompleted = Resolve-Path -Path $ConversionCompleted
+
+# Directory you want log files to go to
+$LogFileDir = ".\Logs"
+$LogFileDir = Resolve-Path -Path $LogFileDir
+
+# HandBreak Instillation directory (The directory that has HandBrakeCLI.exe in it) 
+$HandBreakDir = "C:\Program Files\Handbrake"
+
+
 ##### DO NOT CHANGE BELOW HERE UNLESS YOU KNOW WHAT YOU ARE DOING #####
 
+### Check to make sure all paths and files exist before starting ###
 
 # Create the Conversion Completed Spreadsheet if it does not exist
 If(-not(Test-Path $ConversionCompleted)){
@@ -32,12 +53,38 @@ If(-not(Test-Path $ConversionCompleted)){
     $psObject | Export-Csv $ConversionCompleted -NoTypeInformation
 }
 
+# Create the Logs directory if it does not exist
+if(-not(Test-Path($LogFileDir))){
+    New-Item -ItemType Directory -Force -Path $LogFileDir | Out-Null
+}
+
+# Check to see if HandbreakCLI.exe exists in $HandbreakDir
+if(-not(Test-Path("$HandBreakDir\HandBrakeCLI.exe"))){
+    Write-Host "HandBrakeCLI.exe not found in $HandBreakDir Please make sure that HandBreak is installed.  Quitting" -ForegroundColor Red
+    exit
+}
+
+# Check to see if $MovieDir exists
+if(-not(Test-Path("$MovieDir"))){
+    Write-Host "Movie directory: $MovieDir not found.  Please make sure the path is correct.  Quitting" -ForegroundColor Red
+    exit
+}
+
+# Check to see if $TvShowDir exists
+if(-not(Test-Path("$TvShowDir"))){
+    Write-Host "Tv Show directory: $TvShowDir not found.  Please make sure the path is correct.  Quitting" -ForegroundColor Red
+    exit
+}
+
 #Create Hash table to check against before starting conversions.  This will prevent converting items that have already been converted (This spreadsheet updates automatically)
 $CompletedTable = Import-Csv -Path $ConversionCompleted
 $HashTable=@{}
 foreach($file in $CompletedTable){
     $HashTable[$file."File Name"]=$file."Completed Date"
 }
+
+
+#####  Start looking for files and converting files happens after here #####
 
 # Output that we are finding file
 Write-Host "Finding Movie files over $($MovieSize/1GB)GB in $MovieDir and Episodes over $($TvShowSize/1GB)GB in $TvShowDir be patient..." -ForegroundColor Gray
