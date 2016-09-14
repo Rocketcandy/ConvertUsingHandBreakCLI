@@ -15,7 +15,7 @@ A couple notes about editing the script
  
 # What does the script actually do?
 
-1. By default it will look for all movies files larger than 2GB and all Episode files larger than 1GB
+1. By default it will look for all files in defined $MovieDir over 2GB and all files in defined $TvShowdir over 1GB (it will look for all files recursivly inside of the defined $MovieDir or $TvShowdir so just specify the base directory that includes all files you want to convert.)
 2. Once it has found them all it will start converting them from largest to smallest
 3. It will create a brand new file named: OriginalFileName-New
 4. Once the conversion is completed it will delete the OriginalFileName and rename the newly converted file to match the OriginalFileName
