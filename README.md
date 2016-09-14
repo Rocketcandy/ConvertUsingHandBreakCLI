@@ -1,5 +1,5 @@
 # ConvertUsingHandBreakCLI
-Powershell Script to automate conversion of video files a specified size or larger to smaller mkv files.
+Powershell Script to automate conversion of video files a specified size or larger to smaller mkv or mp4 files.
 
 # Pre Reqs
 1. Must have HandBreak(64-bit) installed.  You can get it here: <https://handbrake.fr/downloads.php>
