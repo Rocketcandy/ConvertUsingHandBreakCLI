@@ -12,16 +12,7 @@ Select Yes to all when prompted
 
 for more information on Execution Policy view this page: <https://technet.microsoft.com/library/hh847748.aspx>
 
-
-
-
-
-
-
-
-
-
-
+# License
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
