@@ -4,6 +4,14 @@ Powershell Script to convert video files to smaller mkv files.
 # Prereqs
 1. Must have HandBreak(64-bit) installed.  You can get it here: <https://handbrake.fr/downloads.php>
 2. Must have powershell setup to allow this script.  See powershell setup
+3. Edit the script and change the first section of the script to match your needs
+
+# Running the script
+1. After you have modified the variables and changed the execution policy rigth click on the script
+2. Select Run with Powershell
+3. You should see a Powershell window apear and you should see this apear at the top of the window
+    Finding Movie Files over xGB in \\Path\To\Movies and Episodes ove xGB in \\Path\To\Shows be patient...
+4. If you see that message the script is running and conversions should start
 
 # Powershell Setup
 The easiest way to do this is to allow this script to run by using this command in powershell running as admin:
