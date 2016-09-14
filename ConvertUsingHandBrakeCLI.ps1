@@ -49,16 +49,16 @@ $LargeMovieFiles = Get-ChildItem $MovieDir -recurse | where-object {$_.length -g
 # Merge the files from both locations into one array and sort largest to smallest (So we start by converting the largest file first)
 $AllLargeFiles = $LargeTvFiles + $LargeMovieFiles | Sort-Object length -Descending
 
-# Run through a loop for each file in our array, converting it to a .mkv file
+# Run through a loop for each file in our array, converting it to a .$FileFormat file
 foreach($File in $AllLargeFiles){
     # Full file name and path
     $InputFile = $File.FullName
-    # File name + "-NEW.mkv" we want it to be an mkv file and we don't want to overwrite the file we are reading from if it is already a .mkv
-    $OutputFile = "$($File.Directory)\$($File.BaseName)-NEW.mkv"
+    # File name + "-NEW.$FileFormat" we want it to be an $FileFormat file and we don't want to overwrite the file we are reading from if it is already a .$FileFormat
+    $OutputFile = "$($File.Directory)\$($File.BaseName)-NEW.$FileFormat"
     # Just the file itself
     $EpisodeName = $File.BaseName
     # The final name that we will rename it to when the conversion is finished and we have deleted the original
-    $FinalName = "$($File.Directory)\$($File.BaseName).mkv"
+    $FinalName = "$($File.Directory)\$($File.BaseName).$FileFormat"
     # Check the Hash table we created from the Conversions Completed spreadsheet.  If it exists skip that file
     if(-not($HashTable.ContainsKey("$FinalName"))){
         # Change the CPU priorety of HandBreakCLI.exe to below Normal in 10 seconds so that the conversion has started
