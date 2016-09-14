@@ -5,15 +5,15 @@ $TvShowSize = 1GB
 # Look for Movies larger than this value
 $MovieSize = 2GB
 # TV Shows directory
-$TvShowDir = "\\NAS-BOX\All\External\Seasons"
+$TvShowDir = "\\path\to\Seasons"
 # Movies directory
-$MovieDir = "\\NAS-BOX\All\External\Videos"
+$MovieDir = "\\path\to\Videos"
 # Location of spreadsheet that contains previously converted files to skip on the next run do NOT create this file, just give it where you want it to go!
-$ConversionCompleted = "\\NAS-BOX\All\Internal\Video Conversion\ConversionsCompleted.csv"
+$ConversionCompleted = "\\path\to\ConversionsCompleted.csv"
 # HandBreak Instillation directory (The directory that has HandBrakeCLI.exe in it) 
 $HandBreakDir = "C:\Program Files\Handbrake"
 # Directory you want log files to go to
-$LogFileDir = "\\NAS-BOX\All\Internal\Video Conversion\Logs"
+$LogFileDir = "\\path\to\Logs"
 
 
 ##### DO NOT CHANGE BELOW HERE UNLESS YOU KNOW WHAT YOU ARE DOING #####
