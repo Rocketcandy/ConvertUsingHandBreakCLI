@@ -7,7 +7,9 @@ Powershell Script to convert video files to smaller mkv files.
 
 # Powershell Setup
 The easiest way to do this is to allow this script to run by using this command in powershell running as admin:
-  Set-ExecutionPolicy Unrestricted
+
+    Set-ExecutionPolicy Unrestricted
+
 Select Yes to all when prompted
 
 for more information on Execution Policy view this page: <https://technet.microsoft.com/library/hh847748.aspx>
