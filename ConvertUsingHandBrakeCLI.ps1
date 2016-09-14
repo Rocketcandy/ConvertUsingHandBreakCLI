@@ -12,10 +12,10 @@ $MovieSize = 2GB
 ### Specify Directories below ###
 
 # TV Shows directory
-$TvShowDir = "N:\Seasons\2 Broke Girls\Season 05"
+$TvShowDir = "C:\Path\To\Episodes"
 
 # Movies directory
-$MovieDir = "N:\Videos\2000's"
+$MovieDir = "\\File.Server\Path\To\Movies"
 
 
 ### Change file format to desired format, defaults to .mkv"
