@@ -14,6 +14,8 @@ $ConversionCompleted = "\\path\to\ConversionsCompleted.csv"
 $HandBreakDir = "C:\Program Files\Handbrake"
 # Directory you want log files to go to
 $LogFileDir = "\\path\to\Logs"
+#File format must be either mkv or mp4
+$FileFormat = "mkv"
 
 
 ##### DO NOT CHANGE BELOW HERE UNLESS YOU KNOW WHAT YOU ARE DOING #####
@@ -71,7 +73,7 @@ foreach($File in $AllLargeFiles){
         # Change Directory to be in the HandBreak Directory
         cd $HandBreakDir
         # Start the Conversion (The switches used are based off of YIFY's settings and depending on the file can compress by 80% or more (The larger the starting file the more we should be able to shrink it)
-        .\HandBrakeCLI.exe -i "$InputFile" -t 1 --angle 1 -o "$OutputFile" -f mkv -w 1862 -l 1066 --crop 0:0:0:58 --modulus 2 -e x265 -q 23 --cfr -a 1 -E copy:* -6 dpl2 -R 48 -B 64 -D 0 --gain 0 --audio-fallback ac3 -m --encoder-preset=veryfast --verbose=1 2> "$LogFileDir\$EpisodeName.txt"
+        .\HandBrakeCLI.exe -i "$InputFile" -t 1 --angle 1 -o "$OutputFile" -f $FileFormat -w 1862 -l 1066 --crop 0:0:0:58 --modulus 2 -e x265 -q 23 --cfr -a 1 -E copy:* -6 dpl2 -R 48 -B 64 -D 0 --gain 0 --audio-fallback ac3 -m --encoder-preset=veryfast --verbose=1 2> "$LogFileDir\$EpisodeName.txt"
         # Check to make sure that the output file actuall exists so that if there was a conversion error we don't delete the original
         if( Test-Path $OutputFile ){
             Remove-Item $InputFile -Force
