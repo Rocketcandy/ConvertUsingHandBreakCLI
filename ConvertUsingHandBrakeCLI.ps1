@@ -1,12 +1,4 @@
-﻿####  Change Values below to match what your enviroment and file size to look for #####
-
-### Change file size if desired below ###
-
-# Look for TV Shows larger than this value
-$TvShowSize = 1GB
-
-# Look for Movies larger than this value
-$MovieSize = 2GB
+﻿####  Change values below to match your enviroment #####
 
 
 ### Specify Directories below ###
@@ -18,13 +10,27 @@ $TvShowDir = "C:\Path\To\Episodes"
 $MovieDir = "\\File.Server\Path\To\Movies"
 
 
+
+##### Changes Below here are optional #####
+
+
+
+### Change file size if desired below ###
+
+# Look for TV Shows larger than this value
+$TvShowSize = 1GB
+
+# Look for Movies larger than this value
+$MovieSize = 2GB
+
+
 ### Change file format to desired format, defaults to .mkv"
 
 #File format must be either mkv or mp4
 $FileFormat = "mkv"
 
 
-##### Can be changed but will default to the extracted folder and the 64bit install of handbreak
+##### These can be changed but will default to the extracted folder and the 64bit install of handbreak #####
 
 # Spreadsheet containing completed conversions information. Do not change unless you want it to go to a differnt path
 $ConversionCompleted = ".\ConversionsCompleted.csv"
@@ -42,7 +48,13 @@ if(Test-Path($LogFileDir)){
 $HandBreakDir = "C:\Program Files\Handbrake"
 
 
+
+
+
 ##### DO NOT CHANGE BELOW HERE UNLESS YOU KNOW WHAT YOU ARE DOING #####
+
+
+
 
 ### Check to make sure all paths and files exist before starting ###
 
