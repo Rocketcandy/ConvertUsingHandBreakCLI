@@ -11,7 +11,7 @@ Powershell Script to convert video files to smaller mkv files.
 2. Select Run with Powershell
 3. You should see a Powershell window apear and you should see this apear at the top of the window:
 
-    Finding Movie Files over xGB in \\Path\To\Movies and Episodes ove xGB in \\Path\To\Shows be patient...
+    Finding Movie Files over xGB in \\\\Path\To\Movies and Episodes ove xGB in \\\\Path\To\Shows be patient...
 
 4. If you see that message the script is running and conversions should start
 
