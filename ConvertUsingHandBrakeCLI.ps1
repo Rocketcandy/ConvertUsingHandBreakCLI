@@ -28,11 +28,15 @@ $FileFormat = "mkv"
 
 # Spreadsheet containing completed conversions information. Do not change unless you want it to go to a differnt path
 $ConversionCompleted = ".\ConversionsCompleted.csv"
-$ConversionCompleted = Resolve-Path -Path $ConversionCompleted
+if(Test-Path($ConversionCompleted)){
+    $ConversionCompleted = Resolve-Path -Path $ConversionCompleted
+}
 
 # Directory you want log files to go to
 $LogFileDir = ".\Logs"
-$LogFileDir = Resolve-Path -Path $LogFileDir
+if(Test-Path($LogFileDir)){
+    $LogFileDir = Resolve-Path -Path $LogFileDir
+}
 
 # HandBreak Instillation directory (The directory that has HandBrakeCLI.exe in it) 
 $HandBreakDir = "C:\Program Files\Handbrake"
@@ -51,28 +55,33 @@ If(-not(Test-Path $ConversionCompleted)){
      Add-Member -InputObject $psobject -MemberType noteproperty -Name $header -Value ""
     }
     $psObject | Export-Csv $ConversionCompleted -NoTypeInformation
+    $ConversionCompleted = Resolve-Path -Path $ConversionCompleted
 }
 
 # Create the Logs directory if it does not exist
 if(-not(Test-Path($LogFileDir))){
     New-Item -ItemType Directory -Force -Path $LogFileDir | Out-Null
+    $LogFileDir = Resolve-Path -Path $LogFileDir
 }
 
 # Check to see if HandbreakCLI.exe exists in $HandbreakDir
 if(-not(Test-Path("$HandBreakDir\HandBrakeCLI.exe"))){
     Write-Host "HandBrakeCLI.exe not found in $HandBreakDir Please make sure that HandBreak is installed.  Quitting" -ForegroundColor Red
+    Read-Host "Press Enter to exit..."
     exit
 }
 
 # Check to see if $MovieDir exists
 if(-not(Test-Path("$MovieDir"))){
     Write-Host "Movie directory: $MovieDir not found.  Please make sure the path is correct.  Quitting" -ForegroundColor Red
+    Read-Host "Press Enter to exit..."
     exit
 }
 
 # Check to see if $TvShowDir exists
 if(-not(Test-Path("$TvShowDir"))){
     Write-Host "Tv Show directory: $TvShowDir not found.  Please make sure the path is correct.  Quitting" -ForegroundColor Red
+    Read-Host "Press Enter to exit..."
     exit
 }
 
