@@ -167,7 +167,8 @@ foreach($File in $AllLargeFiles){
     }
     # If file exists in Conversions Completed Spreadsheet write that we are skipping the file because it was already converted
     elseif($HashTable.ContainsKey("$FinalName")){
-        Write-Host "Skipping $InputFile because it was already converted." -ForegroundColor DarkGreen
+        $CompletedTime = $HashTable.Item("$Finalname")
+        Write-Host "Skipping $InputFile because it was already converted on $CompletedTime." -ForegroundColor DarkGreen
     }
     # Cleanup our variables so there is nothing leftover for the next run
     Clear-Variable InputFile,OutputFile,EpisodeName,FinalName,AllLargeFiles,TvShowDir,MovieDir,LargeMovieFiles,LargeTvFiles,File,EndingFile,EndingFileSize,TvShowSize,MovieSize -ErrorAction SilentlyContinue
