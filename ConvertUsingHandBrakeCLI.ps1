@@ -129,6 +129,10 @@ foreach($File in $AllLargeFiles){
     $FinalName = "$($File.Directory)\$($File.BaseName).$FileFormat"
     # Check the Hash table we created from the Conversions Completed spreadsheet.  If it exists skip that file
     if(-not($HashTable.ContainsKey("$FinalName"))){
+		# Check that the Output file does not already exist, if it does delete it so the new conversions works as intended.
+        if(Test-Path $OutputFile){
+            Remove-Item $OutputFile -Force
+        }
         # Change the CPU priorety of HandBreakCLI.exe to below Normal in 10 seconds so that the conversion has started
         Start-Job -ScriptBlock {
             Start-Sleep -s 10
