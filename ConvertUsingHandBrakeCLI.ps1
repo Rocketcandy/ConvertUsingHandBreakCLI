@@ -130,6 +130,8 @@ foreach($File in $AllLargeFiles){
     $OutputFile = "$($File.Directory)\$($File.BaseName)-NEW.$FileFormat"
     # Just the file itself
     $EpisodeName = $File.BaseName
+    # Create normailed file for the log file (remove unwanted characters from the log file name).
+    $LogEpisodeName = $EpisodeName -replace '[[\]]',''
     # The final name that we will rename it to when the conversion is finished and we have deleted the original
     $FinalName = "$($File.Directory)\$($File.BaseName).$FileFormat"
     # Check the Hash table we created from the Conversions Completed spreadsheet.  If it exists skip that file
@@ -150,7 +152,7 @@ foreach($File in $AllLargeFiles){
         # Change Directory to be in the HandBreak Directory
         cd $HandBreakDir
         # Start the Conversion (The switches used are based off of YIFY's settings and depending on the file can compress by 80% or more (The larger the starting file the more we should be able to shrink it)
-        .\HandBrakeCLI.exe -i "$InputFile" -t 1 --angle 1 -o "$OutputFile" -f $FileFormat --modulus 2 -e x265 -q 23 --cfr -a 1 -E copy:* -6 dpl2 -R 48 -B 64 -D 0 --gain 0 --audio-fallback ac3 -m --encoder-preset=veryfast --verbose=1 2> "$LogFileDir\$EpisodeName.txt"
+        .\HandBrakeCLI.exe -i "$InputFile" -t 1 --angle 1 -o "$OutputFile" -f $FileFormat --modulus 2 -e x265 -q 23 --cfr -a 1 -E copy:* -6 dpl2 -R 48 -B 64 -D 0 --gain 0 --audio-fallback ac3 -m --encoder-preset=veryfast --verbose=1 2> "$LogFileDir\$LogEpisodeName.txt"
         # Check to make sure that the output file actuall exists so that if there was a conversion error we don't delete the original
         if( Test-Path $OutputFile ){
             Remove-Item $InputFile -Force
