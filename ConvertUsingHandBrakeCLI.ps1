@@ -32,14 +32,19 @@ $FileFormat = "mkv"
 
 ##### These can be changed but will default to the extracted folder and the 64bit install of handbreak #####
 
+# Create Variable for storing the current directory
+if (!$WorkingDir){
+    $WorkingDir = (Resolve-Path .\).Path
+}
+
 # Spreadsheet containing completed conversions information. Do not change unless you want it to go to a differnt path
-$ConversionCompleted = ".\ConversionsCompleted.csv"
+$ConversionCompleted = "$WorkingDir\ConversionsCompleted.csv"
 if(Test-Path($ConversionCompleted)){
     $ConversionCompleted = Resolve-Path -Path $ConversionCompleted
 }
 
 # Directory you want log files to go to
-$LogFileDir = ".\Logs"
+$LogFileDir = "$WorkingDir\Logs"
 if(Test-Path($LogFileDir)){
     $LogFileDir = Resolve-Path -Path $LogFileDir
 }
@@ -115,7 +120,7 @@ $LargeTvFiles = Get-ChildItem $TvShowDir -recurse | where-object {$_.length -gt 
 $LargeMovieFiles = Get-ChildItem $MovieDir -recurse | where-object {$_.length -gt $MovieSize}  | Select-Object FullName,Directory,BaseName,Length
 
 # Merge the files from both locations into one array and sort largest to smallest (So we start by converting the largest file first)
-$AllLargeFiles = $LargeTvFiles + $LargeMovieFiles | Sort-Object length -Descending
+$AllLargeFiles = $LargeTvFiles, $LargeMovieFiles | Sort-Object length -Descending
 
 # Run through a loop for each file in our array, converting it to a .$FileFormat file
 foreach($File in $AllLargeFiles){
