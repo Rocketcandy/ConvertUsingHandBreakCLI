@@ -32,19 +32,14 @@ $FileFormat = "mkv"
 
 ##### These can be changed but will default to the extracted folder and the 64bit install of handbreak #####
 
-# Create Variable for storing the current directory
-if (!$WorkingDir){
-    $WorkingDir = (Resolve-Path .\).Path
-}
-
 # Spreadsheet containing completed conversions information. Do not change unless you want it to go to a differnt path
-$ConversionCompleted = "$WorkingDir\ConversionsCompleted.csv"
+$ConversionCompleted = ".\ConversionsCompleted.csv"
 if(Test-Path($ConversionCompleted)){
     $ConversionCompleted = Resolve-Path -Path $ConversionCompleted
 }
 
 # Directory you want log files to go to
-$LogFileDir = "$WorkingDir\Logs"
+$LogFileDir = ".\Logs"
 if(Test-Path($LogFileDir)){
     $LogFileDir = Resolve-Path -Path $LogFileDir
 }
@@ -80,7 +75,6 @@ if(-not(Test-Path($LogFileDir))){
     New-Item -ItemType Directory -Force -Path $LogFileDir | Out-Null
     $LogFileDir = Resolve-Path -Path $LogFileDir
 }
-
 # Check to see if HandbreakCLI.exe exists in $HandbreakDir
 if(-not(Test-Path("$HandBreakDir\HandBrakeCLI.exe"))){
     Write-Host "HandBrakeCLI.exe not found in $HandBreakDir Please make sure that HandBreak is installed.  Quitting" -ForegroundColor Red
@@ -120,7 +114,7 @@ $LargeTvFiles = Get-ChildItem $TvShowDir -recurse | where-object {$_.length -gt 
 $LargeMovieFiles = Get-ChildItem $MovieDir -recurse | where-object {$_.length -gt $MovieSize}  | Select-Object FullName,Directory,BaseName,Length
 
 # Merge the files from both locations into one array and sort largest to smallest (So we start by converting the largest file first)
-$AllLargeFiles = $LargeTvFiles, $LargeMovieFiles | Sort-Object length -Descending
+$AllLargeFiles = $LargeTvFiles + $LargeMovieFiles | Sort-Object length -Descending
 
 # Run through a loop for each file in our array, converting it to a .$FileFormat file
 foreach($File in $AllLargeFiles){
@@ -130,13 +124,13 @@ foreach($File in $AllLargeFiles){
     $OutputFile = "$($File.Directory)\$($File.BaseName)-NEW.$FileFormat"
     # Just the file itself
     $EpisodeName = $File.BaseName
-    # Create normailed file for the log file (remove unwanted characters from the log file name).
-    $LogEpisodeName = $EpisodeName -replace '[[\]]',''
+    #Escape brakets in episode name to prevent errors creating log file.
+    $EpisodeName = $EpisodeName -replace "\[","``[" -replace "\]","``]"
     # The final name that we will rename it to when the conversion is finished and we have deleted the original
     $FinalName = "$($File.Directory)\$($File.BaseName).$FileFormat"
     # Check the Hash table we created from the Conversions Completed spreadsheet.  If it exists skip that file
     if(-not($HashTable.ContainsKey("$FinalName"))){
-		# Check that the Output file does not already exist, if it does delete it so the new conversions works as intended.
+        # Check that the Output file does not already exist, if it does delete it so the new conversions works as intended.
         if(Test-Path $OutputFile){
             Remove-Item $OutputFile -Force
         }
@@ -149,10 +143,8 @@ foreach($File in $AllLargeFiles){
         # Write that we are starting the conversion
         $StartingFileSize = $File.Length/1GB
         Write-Host "Starting conversion on $InputFile it is $([math]::Round($StartingFileSize,2))GB in size before conversion" -ForegroundColor Cyan
-        # Change Directory to be in the HandBreak Directory
-        cd $HandBreakDir
         # Start the Conversion (The switches used are based off of YIFY's settings and depending on the file can compress by 80% or more (The larger the starting file the more we should be able to shrink it)
-        .\HandBrakeCLI.exe -i "$InputFile" -t 1 --angle 1 -o "$OutputFile" -f $FileFormat --modulus 2 -e x265 -q 23 --cfr -a 1 -E copy:* -6 dpl2 -R 48 -B 64 -D 0 --gain 0 --audio-fallback ac3 -m --encoder-preset=veryfast --verbose=1 2> "$LogFileDir\$LogEpisodeName.txt"
+        & $HandBreakDir\HandBrakeCLI.exe -i "$InputFile" -t 1 --angle 1 -o "$OutputFile" -f $FileFormat --modulus 2 -e x265 -q 23 --cfr -a 1 -E copy:* -6 dpl2 -R 48 -B 64 -D 0 --gain 0 --audio-fallback ac3 -m --encoder-preset=veryfast --verbose=1 2> "$LogFileDir\$EpisodeName.txt"
         # Check to make sure that the output file actuall exists so that if there was a conversion error we don't delete the original
         if( Test-Path $OutputFile ){
             Remove-Item $InputFile -Force
