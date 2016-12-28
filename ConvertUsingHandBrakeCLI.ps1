@@ -133,7 +133,7 @@ foreach($File in $AllLargeFiles){
     # Just the file itself
     $EpisodeName = $File.BaseName
     #Fix brakets in the logfile name.
-    $LogEpisodeName = $EpisodeName -replace "\[","``[" -replace "\]","``]"
+    $LogEpisodeName = $EpisodeName -replace '[[\]]',''
     # The final name that we will rename it to when the conversion is finished and we have deleted the original
     $FinalName = "$($File.Directory)\$($File.BaseName).$FileFormat"
     # Check the Hash table we created from the Conversions Completed spreadsheet.  If it exists skip that file
