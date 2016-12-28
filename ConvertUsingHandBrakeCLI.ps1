@@ -1,4 +1,4 @@
-﻿####  Change values below to match your enviroment #####
+####  Change values below to match your enviroment #####
 
 
 ### Specify Directories below ###
@@ -32,14 +32,19 @@ $FileFormat = "mkv"
 
 ##### These can be changed but will default to the extracted folder and the 64bit install of handbreak #####
 
+# Create Variable for storing the current directory
+if (!$WorkingDir){
+    $WorkingDir = (Resolve-Path .\).Path
+}
+
 # Spreadsheet containing completed conversions information. Do not change unless you want it to go to a differnt path
-$ConversionCompleted = ".\ConversionsCompleted.csv"
+$ConversionCompleted = "$WorkingDir\ConversionsCompleted.csv"
 if(Test-Path($ConversionCompleted)){
     $ConversionCompleted = Resolve-Path -Path $ConversionCompleted
 }
 
 # Directory you want log files to go to
-$LogFileDir = ".\Logs"
+$LogFileDir = "$WorkingDir\Logs"
 if(Test-Path($LogFileDir)){
     $LogFileDir = Resolve-Path -Path $LogFileDir
 }
@@ -115,7 +120,7 @@ $LargeTvFiles = Get-ChildItem $TvShowDir -recurse | where-object {$_.length -gt 
 $LargeMovieFiles = Get-ChildItem $MovieDir -recurse | where-object {$_.length -gt $MovieSize}  | Select-Object FullName,Directory,BaseName,Length
 
 # Merge the files from both locations into one array and sort largest to smallest (So we start by converting the largest file first)
-$AllLargeFiles = $LargeTvFiles + $LargeMovieFiles | Sort-Object length -Descending
+$AllLargeFiles = $LargeTvFiles, $LargeMovieFiles | Sort-Object length -Descending
 
 # Run through a loop for each file in our array, converting it to a .$FileFormat file
 foreach($File in $AllLargeFiles){
@@ -125,8 +130,13 @@ foreach($File in $AllLargeFiles){
     $OutputFile = "$($File.Directory)\$($File.BaseName)-NEW.$FileFormat"
     # Just the file itself
     $EpisodeName = $File.BaseName
+<<<<<<< HEAD
     #Fix brakets in the logfile name.
     $EpisodeName = $EpisodeName -replace "\[","``[" -replace "\]","``]"
+=======
+    # Create normailed file for the log file (remove unwanted characters from the log file name).
+    $LogEpisodeName = $EpisodeName -replace '[[\]]',''
+>>>>>>> origin/master
     # The final name that we will rename it to when the conversion is finished and we have deleted the original
     $FinalName = "$($File.Directory)\$($File.BaseName).$FileFormat"
     # Check the Hash table we created from the Conversions Completed spreadsheet.  If it exists skip that file
@@ -145,7 +155,11 @@ foreach($File in $AllLargeFiles){
         $StartingFileSize = $File.Length/1GB
         Write-Host "Starting conversion on $InputFile it is $([math]::Round($StartingFileSize,2))GB in size before conversion" -ForegroundColor Cyan
         # Start the Conversion (The switches used are based off of YIFY's settings and depending on the file can compress by 80% or more (The larger the starting file the more we should be able to shrink it)
+<<<<<<< HEAD
         & $HandBreakDir\HandBrakeCLI.exe -i "$InputFile" -t 1 --angle 1 -o "$OutputFile" -f $FileFormat --modulus 2 -e x265 -q 23 --cfr -a 1 -E copy:* -6 dpl2 -R 48 -B 64 -D 0 --gain 0 --audio-fallback ac3 -m --encoder-preset=veryfast --verbose=1 2> "$LogFileDir\$EpisodeName.txt"
+=======
+        .\HandBrakeCLI.exe -i "$InputFile" -t 1 --angle 1 -o "$OutputFile" -f $FileFormat --modulus 2 -e x265 -q 23 --cfr -a 1 -E copy:* -6 dpl2 -R 48 -B 64 -D 0 --gain 0 --audio-fallback ac3 -m --encoder-preset=veryfast --verbose=1 2> "$LogFileDir\$LogEpisodeName.txt"
+>>>>>>> origin/master
         # Check to make sure that the output file actuall exists so that if there was a conversion error we don't delete the original
         if( Test-Path $OutputFile ){
             Remove-Item $InputFile -Force
