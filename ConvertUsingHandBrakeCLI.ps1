@@ -120,7 +120,9 @@ $LargeTvFiles = Get-ChildItem $TvShowDir -recurse | where-object {$_.length -gt 
 $LargeMovieFiles = Get-ChildItem $MovieDir -recurse | where-object {$_.length -gt $MovieSize}  | Select-Object FullName,Directory,BaseName,Length
 
 # Merge the files from both locations into one array and sort largest to smallest (So we start by converting the largest file first)
-$AllLargeFiles = $LargeTvFiles, $LargeMovieFiles | Sort-Object length -Descending
+$AllLargeFiles = $LargeTvFiles
+$AllLargeFiles += $LargeMovieFiles
+$AllLargeFiles = $AllLargeFiles | Sort-Object length -Descending
 
 # Run through a loop for each file in our array, converting it to a .$FileFormat file
 foreach($File in $AllLargeFiles){
@@ -131,7 +133,7 @@ foreach($File in $AllLargeFiles){
     # Just the file itself
     $EpisodeName = $File.BaseName
     #Fix brakets in the logfile name.
-    $EpisodeName = $EpisodeName -replace "\[","``[" -replace "\]","``]"
+    $LogEpisodeName = $EpisodeName -replace "\[","``[" -replace "\]","``]"
     # The final name that we will rename it to when the conversion is finished and we have deleted the original
     $FinalName = "$($File.Directory)\$($File.BaseName).$FileFormat"
     # Check the Hash table we created from the Conversions Completed spreadsheet.  If it exists skip that file
@@ -150,7 +152,7 @@ foreach($File in $AllLargeFiles){
         $StartingFileSize = $File.Length/1GB
         Write-Host "Starting conversion on $InputFile it is $([math]::Round($StartingFileSize,2))GB in size before conversion" -ForegroundColor Cyan
         # Start the Conversion (The switches used are based off of YIFY's settings and depending on the file can compress by 80% or more (The larger the starting file the more we should be able to shrink it)
-        & $HandBreakDir\HandBrakeCLI.exe -i "$InputFile" -t 1 --angle 1 -o "$OutputFile" -f $FileFormat --modulus 2 -e x265 -q 23 --cfr -a 1 -E copy:* -6 dpl2 -R 48 -B 64 -D 0 --gain 0 --audio-fallback ac3 -m --encoder-preset=veryfast --verbose=1 2> "$LogFileDir\$EpisodeName.txt"
+        & $HandBreakDir\HandBrakeCLI.exe -i "$InputFile" -t 1 --angle 1 -o "$OutputFile" -f $FileFormat --modulus 2 -e x265 -q 23 --cfr -a 1 -E copy:* -6 dpl2 -R 48 -B 64 -D 0 --gain 0 --audio-fallback ac3 -m --encoder-preset=veryfast --verbose=1 2> "$LogFileDir\$LogEpisodeName.txt"
         # Check to make sure that the output file actuall exists so that if there was a conversion error we don't delete the original
         if( Test-Path $OutputFile ){
             Remove-Item $InputFile -Force
