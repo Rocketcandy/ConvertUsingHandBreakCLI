@@ -9,7 +9,8 @@ $TvShowDir = "C:\Path\To\Episodes"
 # Movies directory
 $MovieDir = "\\File.Server\Path\To\Movies"
 
-
+# HandBreakCLI Directory (Wherever you extracted Handbreak to.  Example: C:\Downloads\HandBrakeCLI-1.0.3-win-x86_64
+$HandBreakDir = "C:\Downloads\HandBrakeCLI-1.0.3-win-x86_64"
 
 ##### Changes Below here are optional #####
 
@@ -48,10 +49,6 @@ $LogFileDir = "$WorkingDir\Logs"
 if(Test-Path($LogFileDir)){
     $LogFileDir = Resolve-Path -Path $LogFileDir
 }
-
-# HandBreak Instillation directory (The directory that has HandBrakeCLI.exe in it) 
-$HandBreakDir = "C:\Program Files\Handbrake"
-
 
 
 
