@@ -1,3 +1,7 @@
+# New Version - New Repo
+Check for the newest version here: https://github.com/Rocketcandy/VideoFileResizer
+
+
 # ConvertUsingHandBreakCLI
 Powershell Script to automate conversion of video files a specified size or larger to smaller mkv or mp4 files.
 
